@@ -1,0 +1,7 @@
+Predictions: [1 0 0 0]
+Expected:    [1, 0, 1, 0]
+Probabilities: [0.9057426  0.16719365 0.49999723 0.40961178]
+accuracy_score: 0.75
+precision_score: 1.0
+recall_score: 0.5
+f1_score: 0.6666666666666666
