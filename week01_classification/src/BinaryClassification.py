@@ -32,20 +32,45 @@ class SpamClassifier:
             print("vocab",vocab_set)
         self.vocab = {word: idx for idx, word in enumerate(sorted(vocab_set))}    
 
-    def text_to_features (self,texts,vocabulary= None):
-        if vocabulary is None:
-            vocabulary = self.vocab
+    # def text_to_features (self,texts,vocabulary= None):
+    #     if vocabulary is None:
+    #         vocabulary = self.vocab
 
-        features = np.zeros((len(texts),len(vocabulary)))
-        print("features",features)
-        for i,text in enumerate(texts):
-            words = self.preprocess_text(text)
-            for word in words:
-                if word in vocabulary:
-                    idx = vocabulary[word]
-                    features[i, idx] += 1  # Bag-of-Words: count occurrences
-                    print("text to features",features)
-        return features
+    #     features = np.zeros((len(texts),len(vocabulary)))
+    #     print("features",features)
+    #     for i,text in enumerate(texts):
+    #         words = self.preprocess_text(text)
+    #         for word in words:
+    #             if word in vocabulary:
+    #                 idx = vocabulary[word]
+    #                 features[i, idx] += 1  # Bag-of-Words: count occurrences
+    #                 print("text to features",features)
+    #     return features
+
+    def text_to_features(self, texts,vocabulary= None):
+            num_docs = len(texts)
+            vocab_size = len(self.vocab)
+
+            # Step 1: Bag-of-Words (count matrix)
+            counts = np.zeros((num_docs, vocab_size))
+            for i, text in enumerate(texts):
+                words = self.preprocess_text(text)
+                for word in words:
+                    if word in self.vocab:
+                        idx = self.vocab[word]
+                        counts[i, idx] += 1
+
+            # Step 2: Term Frequency (TF) -> normalize counts by total words in doc
+            tf = counts / np.maximum(counts.sum(axis=1, keepdims=True), 1)
+
+            # Step 3: Inverse Document Frequency (IDF)
+            df = np.count_nonzero(counts > 0, axis=0)   # in how many docs each word appears
+            idf = np.log((num_docs + 1) / (df + 1)) + 1  # smoothing
+
+            # Step 4: TF-IDF = TF × IDF
+            feature = tf * idf
+
+            return feature
     
     def sigmoid (self,z):
         z = np.clip(z,-500,500) #prevent overflow from the expo fn since it can produce large number

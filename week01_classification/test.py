@@ -1,30 +1,42 @@
-from src.main import SpamClassifier
+from src.BinaryClassification import SpamClassifier
 from src.performance_metrics import accuracy_score,precision_score,recall_score,f1_score
 
 def test_spam_classifier():
-    # Sample training data
+    # More complex training data
     train_emails = [
-        "free money now click here to win",
-        "hello how are you doing today",
-        "get rich quick scheme buy now",
-        "meeting scheduled for tomorrow at 3pm",
-        "congratulations you won million dollars",
-        "thanks for your help yesterday",
-        "urgent act now limited time offer",
-        "can we reschedule our lunch meeting"
+        "Congratulations! You have won a $1000 Walmart gift card. Click here to claim now.",
+        "Dear friend, I hope you are doing well. Let's catch up soon.",
+        "Limited time offer! Buy one get one free on all products. Hurry up!",
+        "Your Amazon order has been shipped. Track your package here.",
+        "You have been selected for a free cruise to the Bahamas. Call now!",
+        "Meeting rescheduled to next Monday at 10am. Please confirm your availability.",
+        "Earn money from home. No experience required. Start today!",
+        "Lunch at the new Italian place tomorrow?",
+        "Get cheap medicines online without prescription. Order now!",
+        "Project deadline extended to next Friday. Update your tasks accordingly.",
+        "Winner! You have been chosen for a special prize. Respond immediately.",
+        "Can you send me the notes from yesterday's class?",
+        "Lowest prices on electronics. Visit our website for exclusive deals.",
+        "Let's go hiking this weekend if the weather is good.",
+        "Urgent: Your account has been compromised. Reset your password now.",
+        "Family dinner at my place this Sunday. Let me know if you can make it.",
     ]
-    train_labels = [1, 0, 1, 0, 1, 0, 1, 0]  # 1 = spam, 0 = not spam
+    train_labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]  # 1 = spam, 0 = not spam
 
-    # Sample test data
+    # More complex test data
     test_emails = [
-        "win money now",
-        "let's meet for lunch",
-        "urgent offer just for you",
-        "see you tomorrow"
+        "Special offer just for you! Buy two get one free. Limited time only.",
+        "Let's meet at the coffee shop at 4pm.",
+        "Your PayPal account has been suspended. Click here to verify.",
+        "Don't forget to bring your laptop for the meeting.",
+        "Congratulations! You are the lucky winner of our lottery.",
+        "Can you review my code before tomorrow's deadline?",
+        "Cheap flights to Europe available now. Book your tickets today!",
+        "Looking forward to our trip next month.",
     ]
-    expected = [1, 0, 1, 0]
+    expected = [1, 0, 1, 0, 1, 0, 1, 0]
 
-    classifier = SpamClassifier(lr=0.1, epochs=500)
+    classifier = SpamClassifier(lr=0.1, epochs=1000)
     predictions, probabilities = classifier.fit_and_predict(train_emails, train_labels, test_emails)
 
     acc = accuracy_score(expected, predictions)
